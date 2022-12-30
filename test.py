@@ -8,7 +8,7 @@ signals = dbus.Interface(bus.get_object("org.fubar.signal1",
                                                 "/org/fubar/signal1"),
                                                 "org.fubar.signal1")
 
-for i in range(5, 18):
+for i in range(5, 17):
     size = math.pow(2, i)
     start = time.time()
     signals.SpamSignal(10, 1)
