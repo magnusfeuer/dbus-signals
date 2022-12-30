@@ -33,8 +33,7 @@ static uint64_t prev_size = 0;
 static double diff_sum = 0.0;
 static double start = -1.0;
 
-static int bus_signal_cb(sd_bus_message *m, void *user_data, sd_bus_error
-        *ret_error) {
+static int bus_signal_cb(sd_bus_message *m, void *user_data, sd_bus_error *ret_error) {
     int r = 0;
     double ts = 0;
     double now;
@@ -42,6 +41,7 @@ static int bus_signal_cb(sd_bus_message *m, void *user_data, sd_bus_error
     uint64_t size = 0;
 
     now = time_time();
+    printf("CLIENT\n");
 
     r = sd_bus_message_read(m, "dts", &ts, &size, &msg);
     if (r < 0) {
@@ -61,7 +61,7 @@ static int bus_signal_cb(sd_bus_message *m, void *user_data, sd_bus_error
             double avg = diff_sum / (double) count;
             double msg_sec = (double) count / (now - start);
             double mib = (prev_size * msg_sec) / (double) (1024 * 1024);
-            printf("%d,%f,%f,%f, %d\n", prev_size, avg, msg_sec, mib, count);
+            printf("%lu,%f,%f,%f, %lu\n", prev_size, avg, msg_sec, mib, count);
         }
         diff_sum = 0.0;
         count = 0;
@@ -69,7 +69,7 @@ static int bus_signal_cb(sd_bus_message *m, void *user_data, sd_bus_error
     }
 
     prev_size = size;
-    sd_bus_message_unref(m);
+
     return 0;
 }
 
