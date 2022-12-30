@@ -41,7 +41,6 @@ static int bus_signal_cb(sd_bus_message *m, void *user_data, sd_bus_error *ret_e
     uint64_t size = 0;
 
     now = time_time();
-    printf("CLIENT\n");
 
     r = sd_bus_message_read(m, "dts", &ts, &size, &msg);
     if (r < 0) {
