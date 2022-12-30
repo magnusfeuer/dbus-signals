@@ -57,10 +57,10 @@ static int bus_signal_cb(sd_bus_message *m, void *user_data, sd_bus_error *ret_e
         count = 0;
     } else if (size == 2) {
         if (prev_size > 2 && count > 10) {
-            double avg = diff_sum / (double) count;
+            double avg = diff_sum / (double) count * 1000.0;
             double msg_sec = (double) count / (now - start);
             double mib = (prev_size * msg_sec) / (double) (1024 * 1024);
-            printf("%lu,%f,%f,%f, %lu\n", prev_size, avg, msg_sec, mib, count);
+            printf("%12lu %13.2f %13.0f %11.0f %18lu\n", prev_size, avg, msg_sec, mib, count);
         }
         diff_sum = 0.0;
         count = 0;
@@ -161,6 +161,7 @@ int main(int argc, char *argv[]) {
             fprintf(stderr, "Failed: sd_bus_add_match: %s\n", strerror(-r));
             goto finish;
         }
+        printf("payload size   usec/signal   signals/sec   mbyte/sec   signals received\n");
     } else {
         fprintf(stderr, "Invalid operating mode %s", mode);
         return 1;
